@@ -24,3 +24,8 @@ Use this repo as the starting point for a Godot VR MMORPG client implementation,
 ## Status policy
 
 Everything pushed in this repository is currently documentation only.
+
+## License
+
+This starter template is licensed under the MIT License. Ultimate Odycer game
+content, server code, hosted services, and third-party assets are not included.
