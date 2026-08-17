@@ -1,7 +1,9 @@
 # Security Policy
 
-This repository currently contains documentation only. Do not include
-credentials, production endpoints, proprietary server code, player data, or
-unreviewed assets in reports or contributions.
+This repository currently contains documentation only.
 
-Report security concerns through GitHub private vulnerability reporting.
+Never submit credentials, private keys, player data, production endpoints, protocol captures containing identities, proprietary server code, server binaries, billing configuration or unaudited assets.
+
+Future network examples must default to local or placeholder endpoints, validate all server certificates and keep gameplay authority on the server. Client-side values must never be presented as authoritative.
+
+Use GitHub private vulnerability reporting for security concerns. Do not place sensitive reproduction data in a public issue.

@@ -1,31 +1,35 @@
-# UltOd client Godot VR MMORPG Template
+# UltOd Client Godot VR MMORPG Template
 
-This repository is a template for the VR client branch of the UltOd MMORPG stack.
+Documentation-only foundation for a future open Godot VR MMORPG client starter.
 
-## Current state
+> **Status:** Code publication blocked. The known VR branch is associated with an older, currently unaligned Zig server version. Existing Ultimate Odycer client or server code must not be imported without a file-level public extraction audit.
 
-- Repository is created and ready as a GitHub template.
-- Topics and metadata are set.
-- No client gameplay code is included yet.
-- Client integration is paused until Zig server version alignment is validated.
+## Current repository contents
 
-## Purpose
+- Public scope and exclusion rules
+- Compatibility gates and roadmap
+- MIT license for future original starter material
 
-Use this repo as the starting point for a Godot VR MMORPG client implementation, with naming and licensing conventions matching the UltOd ecosystem.
+There is no Godot project, gameplay implementation, network client, asset, server binary, protocol dump, production endpoint or player data in this repository.
 
-## Planned work (not yet applied)
+## Intended outcome
 
-- Scene and XR setup
-- Player controller baseline
-- Network client layer placeholders
-- Build/run instructions
-- Content pipeline scripts
+- OpenXR project setup and capability detection
+- VR locomotion and comfort options
+- Head and hand pose abstraction
+- Server-authoritative login, realm handoff and movement boundaries
+- Desktop fallback clearly separated from VR proof
 
-## Status policy
+See [SCOPE.md](SCOPE.md), [ROADMAP.md](ROADMAP.md), [server compatibility](docs/SERVER-COMPATIBILITY.md), and the [publication checklist](docs/PUBLICATION-CHECKLIST.md).
 
-Everything pushed in this repository is currently documentation only.
+## Non-claims
 
-## License
+Repository creation does not prove server compatibility, production readiness, gameplay completeness, asset rights, platform or headset support, networking security or performance.
 
-This starter template is licensed under the MIT License. Ultimate Odycer game
-content, server code, hosted services, and third-party assets are not included.
+## Résumé français
+
+Ce dépôt reste exclusivement documentaire. Aucun code du client VR ou du serveur Zig historique ne doit être copié avant validation du protocole canonique, des droits de publication et des règles d'autorité serveur.
+
+## License boundary
+
+Future original starter material is intended to be MIT licensed. The license does not grant rights to Ultimate Odycer game content, proprietary server code, hosted infrastructure, commercial services or third-party assets.
