@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner-godot-vr.png" alt="UltOd Client Godot VR MMORPG Template" width="100%" />
+<img src="assets/banner-godot-vr.jpg" alt="UltOd Client Godot VR MMORPG Template" width="100%" />
 
 ### UltOd Client Godot VR MMORPG Template
 
