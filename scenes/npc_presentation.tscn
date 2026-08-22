@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://npc01vrpres"]
+
+[node name="NPCPresentation" type="Node3D"]
+
+[node name="MeshInstance3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+size = Vector3(0.6, 1.8, 0.6)
+
+[node name="InteractionPrompt" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+pixel_size = 0.004
+billboard = 1
+text = "[Talk - Synthetic NPC Demo]"
+font_size = 28

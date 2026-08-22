@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://uistub01vr"]
+
+[node name="UIStub" type="Node3D"]
+
+[node name="PanelLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.2)
+pixel_size = 0.003
+billboard = 1
+text = "--- In-VR UI Presentation Stub ---
+Presentation Only - Non Authoritative"
+font_size = 24
