@@ -17,7 +17,7 @@
 
 Documentation-only foundation for a future open Godot VR MMORPG client starter.
 
-> **Status:** No client code is published. Architecture and canonical server compatibility are still under review. Existing Ultimate Odycer client or server code must not be imported without a file-level public extraction audit.
+> **Status:** Minimal original Godot 4 / OpenXR presentation shell published. Architecture and canonical server compatibility remain under review. Network layer is blocked and no proprietary client or server code is imported.
 
 ## Current repository contents
 
@@ -26,7 +26,7 @@ Documentation-only foundation for a future open Godot VR MMORPG client starter.
 - Public extraction allowlist and planned original shell layout
 - MIT license for future original starter material
 
-There is no game project, gameplay implementation, network client, asset, server binary, protocol dump, production endpoint, or player data in this repository.
+The repository provides an isolated presentation shell and documentation. There is no live network client, proprietary asset, server binary, protocol dump, production endpoint, or player data.
 
 ## Intended outcome
 

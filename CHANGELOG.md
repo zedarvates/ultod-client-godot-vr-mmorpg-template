@@ -4,6 +4,14 @@ All notable public changes will be documented here once versioned releases begin
 
 ## Unreleased
 
+### Minimal Godot/OpenXR presentation shell
+
+- Added original `project.godot` and base presentation scenes (`bootstrap.tscn`, `player_presentation.tscn`, `npc_presentation.tscn`, `zone_stub.tscn`, `ui_stub.tscn`).
+- Added original OpenXR capability checker with fail-closed fallback.
+- Added comfort-oriented locomotion stub for local presentation.
+- Added synthetic presentation test fixture and intent contract documentation.
+- Live network sockets and proprietary code remain completely excluded.
+
 ### Public extraction design
 
 - Documented a file-level allowlist and license audit for a future original shell.

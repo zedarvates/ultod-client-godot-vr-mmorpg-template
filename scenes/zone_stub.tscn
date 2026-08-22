@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://zonestub01vr"]
+
+[node name="ZoneStub" type="Node3D"]
+
+[node name="GroundPlane" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+use_collision = true
+size = Vector3(50, 0.1, 50)
