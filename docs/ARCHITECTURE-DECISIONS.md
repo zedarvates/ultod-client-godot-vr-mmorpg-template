@@ -6,6 +6,7 @@
 | ADR-002 | accepted | The server remains authoritative for identity, movement, combat, inventory, progression and economy. |
 | ADR-003 | accepted | Consume JSON registry snapshots only by pinned version and verified SHA-256. |
 | ADR-004 | accepted | Keep all code publication blocked until the legacy VR/Zig contract is reconciled with the canonical server. |
+| ADR-005 | accepted | Future starter files must be original and created from the public extraction allowlist; proprietary client paths remain denied. |
 
 ## Change policy
 
