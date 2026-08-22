@@ -4,6 +4,12 @@ All notable public changes will be documented here once versioned releases begin
 
 ## Unreleased
 
+### Public extraction design
+
+- Documented a file-level allowlist and license audit for a future original shell.
+- Denied proprietary client paths, protocol dumps, and unreviewed assets.
+- Recorded the planned original scene/input/net layout without publishing Godot files.
+
 ### Documentation foundation
 
 - Defined public and excluded scope.

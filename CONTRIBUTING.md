@@ -4,7 +4,8 @@ This repository currently accepts documentation improvements only.
 
 ## Current gate
 
-The VR server compatibility gate must be approved before any code contribution.
+The VR server compatibility gate must be approved before any network code contribution.
+Original Godot files, if proposed later, must match [docs/PUBLIC-EXTRACTION-DESIGN.md](docs/PUBLIC-EXTRACTION-DESIGN.md) and still pass the publication checklist. Proprietary client paths remain denied.
 
 ## Never include
 
