@@ -46,6 +46,8 @@ jobs:
 
           print(f"Successfully validated {len(md_files)} markdown files and all internal links.")
           PY
+      - name: Syntax-check local Godot VR proof tool
+        run: python -m py_compile tools/validate_godot_4_7_2_headless.py
       - name: Validate VR proof metadata, authority and legacy quarantine
         shell: bash
         run: |
