@@ -21,6 +21,16 @@ The project metadata must not be changed merely to appear current. Promote the v
 7. Promote `project.godot` metadata only after the proof exists.
 8. Re-run the gate on the promoted commit.
 
+Use the repository validator for engine-only proof with XR explicitly disabled:
+
+```bash
+python tools/validate_godot_4_7_2_headless.py \
+  --godot /path/to/godot-4.7.2 \
+  --evidence .evidence/godot-4.7.2-vr-headless.json
+```
+
+`.evidence/` is intentionally gitignored. The generated receipt records `xr_mode=off`, `openxr_runtime_proven=false`, `headset_runtime_proven=false`, and `network_compatibility_proven=false`; therefore a successful headless run must never be promoted as OpenXR/headset/network proof.
+
 ## OpenXR validation sequence
 
 Engine load and OpenXR/headset validation are separate.
