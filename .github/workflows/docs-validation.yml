@@ -50,6 +50,7 @@ jobs:
         run: |
           python -m py_compile tools/validate_godot_4_7_2_headless.py
           python -m py_compile tools/validate_synthetic_transport.py
+          python -m py_compile tools/run_p0_local_proof.py
       - name: Guard transport-independent VR intent contract
         shell: bash
         run: |
