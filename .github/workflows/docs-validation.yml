@@ -48,6 +48,26 @@ jobs:
           PY
       - name: Syntax-check local Godot VR proof tool
         run: python -m py_compile tools/validate_godot_4_7_2_headless.py
+      - name: Guard transport-independent VR intent contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("net/intent_contract.gd")
+          text = path.read_text(encoding="utf-8")
+          required = ['"session"', '"move"', '"interact"', '"talk"', 'client_authority_field_forbidden']
+          for marker in required:
+              if marker not in text:
+                  raise SystemExit(f"Intent contract missing required marker: {marker}")
+          for forbidden in ("WebSocketPeer", "WebSocketClient", "ENetMultiplayerPeer", "PacketPeerUDP", "http://", "https://"):
+              if forbidden in text:
+                  raise SystemExit(f"VR intent contract must remain transport-independent: {forbidden}")
+          doc = Path("docs/NETWORK-INTENT-CONTRACT.md").read_text(encoding="utf-8")
+          if "vr-specific pose/grab/release intents are intentionally not added yet" not in doc.lower():
+              raise SystemExit("VR intent documentation must keep pose/grab/release behind a separate reviewed gate")
+          print("Transport-independent VR intent boundary validated.")
+          PY
       - name: Validate VR proof metadata, authority and legacy quarantine
         shell: bash
         run: |
