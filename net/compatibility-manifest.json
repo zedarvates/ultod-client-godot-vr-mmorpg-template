@@ -1,0 +1,61 @@
+{
+  "schema": "uo.network-compatibility/v1",
+  "client": {
+    "name": "ultod-client-godot-vr-mmorpg-template",
+    "template_version": "0.1.0",
+    "intent_contract": "network-intent-v1",
+    "engine_declared_in_project": "4.3",
+    "engine_target_baseline": "4.7.2-stable",
+    "engine_target_proven": false,
+    "openxr_configured": true,
+    "openxr_runtime_proven": false,
+    "headset_runtime_proven": false
+  },
+  "proof": {
+    "level": "DOCUMENTED",
+    "zig_compatibility": false,
+    "canonical_server_repository": null,
+    "canonical_server_sha": null,
+    "zig_toolchain": null,
+    "protocol_revision": null,
+    "blocker": "Pin the private canonical Zig baseline, prove Godot 4.7.2/OpenXR separately, and keep historical Zig networking quarantined."
+  },
+  "legacy": {
+    "historical_network_status": "LEGACY_QUARANTINED",
+    "copy_old_transport_assumptions": false,
+    "copy_old_framing_assumptions": false,
+    "copy_old_auth_assumptions": false,
+    "requires_file_level_license_review": true,
+    "requires_provenance_for_reuse": true
+  },
+  "evidence": {
+    "intent_contract": "documented",
+    "synthetic_network_fixture": "not_implemented",
+    "godot_4_7_2_project_load": "not_proven",
+    "openxr_initialization": "not_proven",
+    "headset_validation": "not_proven",
+    "authentication": "not_implemented",
+    "realm_handoff": "not_implemented",
+    "vr_pose_transport": "not_implemented",
+    "authoritative_movement_reconciliation": "not_implemented",
+    "authoritative_grab_release": "not_implemented",
+    "reconnect": "not_implemented",
+    "session_resume": "not_implemented",
+    "tls_wss_live_server": "not_proven"
+  },
+  "authority": {
+    "client_may_author_damage": false,
+    "client_may_author_inventory": false,
+    "client_may_author_currency": false,
+    "client_may_author_progression": false,
+    "client_may_author_permissions": false,
+    "client_may_validate_movement_speed": false,
+    "client_may_author_world_grab": false,
+    "client_may_author_interaction_outcome": false
+  },
+  "licensing_boundary": {
+    "public_template_license": "MIT",
+    "contains_private_server_implementation": false,
+    "private_server_policy": "proprietary-commercial-all-rights-reserved-unless-explicitly-licensed"
+  }
+}

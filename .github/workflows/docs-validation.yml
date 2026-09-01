@@ -46,3 +46,120 @@ jobs:
 
           print(f"Successfully validated {len(md_files)} markdown files and all internal links.")
           PY
+      - name: Syntax-check local Godot VR proof tools
+        run: |
+          python -m py_compile tools/validate_godot_4_7_2_headless.py
+          python -m py_compile tools/validate_synthetic_transport.py
+          python -m py_compile tools/run_p0_local_proof.py
+      - name: Guard transport-independent VR intent contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("net/intent_contract.gd")
+          text = path.read_text(encoding="utf-8")
+          required = ['"session"', '"move"', '"interact"', '"talk"', 'client_authority_field_forbidden']
+          for marker in required:
+              if marker not in text:
+                  raise SystemExit(f"Intent contract missing required marker: {marker}")
+          for forbidden in ("WebSocketPeer", "WebSocketClient", "ENetMultiplayerPeer", "PacketPeerUDP", "http://", "https://"):
+              if forbidden in text:
+                  raise SystemExit(f"VR intent contract must remain transport-independent: {forbidden}")
+          doc = Path("docs/NETWORK-INTENT-CONTRACT.md").read_text(encoding="utf-8")
+          if "vr-specific pose/grab/release intents are intentionally not added yet" not in doc.lower():
+              raise SystemExit("VR intent documentation must keep pose/grab/release behind a separate reviewed gate")
+          print("Transport-independent VR intent boundary validated.")
+          PY
+      - name: Guard VR synthetic transport fixture boundary
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          synthetic = Path("net/synthetic_transport.gd").read_text(encoding="utf-8")
+          scenario = Path("tests/synthetic_transport_fixture.gd").read_text(encoding="utf-8")
+          runner = Path("tools/validate_synthetic_transport.py").read_text(encoding="utf-8")
+          doc = Path("docs/SYNTHETIC-TRANSPORT-FIXTURE.md").read_text(encoding="utf-8")
+
+          for marker in ("SYNTHETIC_FIXTURE_ONLY", "simulate_drop", "authoritative_transform", "synthetic_connection_dropped"):
+              if marker not in synthetic:
+                  raise SystemExit(f"VR synthetic fixture missing required marker: {marker}")
+          for marker in ("transport_not_online", "client_authority_field_forbidden", '"resume"', "openxr_runtime_proven", "headset_runtime_proven"):
+              if marker not in scenario:
+                  raise SystemExit(f"VR synthetic scenario missing assertion marker: {marker}")
+          for marker in ("4.7.2.stable", "SYNTHETIC_FIXTURE_ONLY", '"--xr-mode"', "canonical_zig_compatibility_proven"):
+              if marker not in runner:
+                  raise SystemExit(f"VR synthetic proof runner missing marker: {marker}")
+          for forbidden in ("WebSocketPeer", "WebSocketClient", "ENetMultiplayerPeer", "PacketPeerUDP", "StreamPeerTCP", "http://", "https://", "tcp://", "udp://"):
+              if forbidden in synthetic:
+                  raise SystemExit(f"VR synthetic fixture must remain socket-free: {forbidden}")
+          lowered = doc.lower()
+          for marker in ("runtime proof pending", "xr explicitly disabled", "legacy_quarantined"):
+              if marker not in lowered:
+                  raise SystemExit(f"VR synthetic fixture documentation missing proof boundary: {marker}")
+          print("VR synthetic fixture structure validated; no engine/OpenXR/headset/Zig runtime proof claimed by this CI job.")
+          PY
+      - name: Validate VR proof metadata, authority and legacy quarantine
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          manifest = json.loads(Path("net/compatibility-manifest.json").read_text(encoding="utf-8"))
+          project = Path("project.godot").read_text(encoding="utf-8")
+
+          if manifest.get("schema") != "uo.network-compatibility/v1":
+              raise SystemExit("Unsupported compatibility manifest schema")
+
+          client = manifest["client"]
+          proof = manifest["proof"]
+          legacy = manifest["legacy"]
+          authority = manifest["authority"]
+          licensing = manifest["licensing_boundary"]
+
+          if any(authority.values()):
+              raise SystemExit("VR public client authority boundary must remain false for server-owned decisions")
+
+          if legacy["historical_network_status"] != "LEGACY_QUARANTINED":
+              raise SystemExit("Historical VR networking must remain quarantined until explicit reviewed evidence exists")
+          for key in ("copy_old_transport_assumptions", "copy_old_framing_assumptions", "copy_old_auth_assumptions"):
+              if legacy[key] is not False:
+                  raise SystemExit(f"Legacy quarantine violation: {key}")
+          if legacy["requires_file_level_license_review"] is not True or legacy["requires_provenance_for_reuse"] is not True:
+              raise SystemExit("Legacy reuse must require license review and provenance")
+
+          if proof["zig_compatibility"]:
+              if proof["level"] not in {"REAL_SERVER_E2E", "ADVERSARIAL_E2E", "RELEASE_PROVEN"}:
+                  raise SystemExit("FAKE-GREEN: Zig compatibility requires a real-server proof level")
+              if not proof["canonical_server_repository"]:
+                  raise SystemExit("FAKE-GREEN: Zig compatibility requires the canonical private server repository")
+              if not re.fullmatch(r"[0-9a-f]{40}", proof["canonical_server_sha"] or ""):
+                  raise SystemExit("FAKE-GREEN: Zig compatibility requires an exact 40-hex server SHA")
+              if not proof["zig_toolchain"] or not proof["protocol_revision"]:
+                  raise SystemExit("FAKE-GREEN: Zig compatibility requires toolchain and protocol revision")
+
+          if client["engine_target_proven"]:
+              if client["engine_target_baseline"] != "4.7.2-stable":
+                  raise SystemExit("Unexpected proven Godot target")
+              if client["engine_declared_in_project"] != "4.7.2":
+                  raise SystemExit("FAKE-GREEN: engine proof cannot be true while project declaration remains historical")
+              if 'config/features=PackedStringArray("4.7.2", "Forward Plus")' not in project:
+                  raise SystemExit("FAKE-GREEN: project.godot does not match claimed Godot proof")
+
+          if client["headset_runtime_proven"] and not client["openxr_runtime_proven"]:
+              raise SystemExit("FAKE-GREEN: headset proof requires OpenXR runtime proof")
+          if client["openxr_runtime_proven"] and not client["engine_target_proven"]:
+              raise SystemExit("FAKE-GREEN: OpenXR proof requires the target engine proof")
+
+          if licensing["public_template_license"] != "MIT":
+              raise SystemExit("Unexpected public VR template license")
+          if licensing["contains_private_server_implementation"] is not False:
+              raise SystemExit("Public VR starter must not contain private server implementation")
+          if "proprietary-commercial" not in licensing["private_server_policy"]:
+              raise SystemExit("Private commercial license boundary is missing")
+
+          print("VR proof metadata, authority boundary, legacy quarantine, and license boundary validated.")
+          PY
