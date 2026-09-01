@@ -46,8 +46,10 @@ jobs:
 
           print(f"Successfully validated {len(md_files)} markdown files and all internal links.")
           PY
-      - name: Syntax-check local Godot VR proof tool
-        run: python -m py_compile tools/validate_godot_4_7_2_headless.py
+      - name: Syntax-check local Godot VR proof tools
+        run: |
+          python -m py_compile tools/validate_godot_4_7_2_headless.py
+          python -m py_compile tools/validate_synthetic_transport.py
       - name: Guard transport-independent VR intent contract
         shell: bash
         run: |
@@ -67,6 +69,35 @@ jobs:
           if "vr-specific pose/grab/release intents are intentionally not added yet" not in doc.lower():
               raise SystemExit("VR intent documentation must keep pose/grab/release behind a separate reviewed gate")
           print("Transport-independent VR intent boundary validated.")
+          PY
+      - name: Guard VR synthetic transport fixture boundary
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          synthetic = Path("net/synthetic_transport.gd").read_text(encoding="utf-8")
+          scenario = Path("tests/synthetic_transport_fixture.gd").read_text(encoding="utf-8")
+          runner = Path("tools/validate_synthetic_transport.py").read_text(encoding="utf-8")
+          doc = Path("docs/SYNTHETIC-TRANSPORT-FIXTURE.md").read_text(encoding="utf-8")
+
+          for marker in ("SYNTHETIC_FIXTURE_ONLY", "simulate_drop", "authoritative_transform", "synthetic_connection_dropped"):
+              if marker not in synthetic:
+                  raise SystemExit(f"VR synthetic fixture missing required marker: {marker}")
+          for marker in ("transport_not_online", "client_authority_field_forbidden", '"resume"', "openxr_runtime_proven", "headset_runtime_proven"):
+              if marker not in scenario:
+                  raise SystemExit(f"VR synthetic scenario missing assertion marker: {marker}")
+          for marker in ("4.7.2.stable", "SYNTHETIC_FIXTURE_ONLY", '"--xr-mode"', "canonical_zig_compatibility_proven"):
+              if marker not in runner:
+                  raise SystemExit(f"VR synthetic proof runner missing marker: {marker}")
+          for forbidden in ("WebSocketPeer", "WebSocketClient", "ENetMultiplayerPeer", "PacketPeerUDP", "StreamPeerTCP", "http://", "https://", "tcp://", "udp://"):
+              if forbidden in synthetic:
+                  raise SystemExit(f"VR synthetic fixture must remain socket-free: {forbidden}")
+          lowered = doc.lower()
+          for marker in ("runtime proof pending", "xr explicitly disabled", "legacy_quarantined"):
+              if marker not in lowered:
+                  raise SystemExit(f"VR synthetic fixture documentation missing proof boundary: {marker}")
+          print("VR synthetic fixture structure validated; no engine/OpenXR/headset/Zig runtime proof claimed by this CI job.")
           PY
       - name: Validate VR proof metadata, authority and legacy quarantine
         shell: bash
